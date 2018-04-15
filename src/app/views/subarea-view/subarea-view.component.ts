@@ -6,6 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./subarea-view.component.css']
 })
 export class SubareaViewComponent implements OnInit {
+  popoverPosition: string = "left";
   selectedItem: any;
   @Input()
   data;
@@ -13,6 +14,15 @@ export class SubareaViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window.innerWidth 
+  }
+
+  updatePopoverPosition() {
+    if (window.innerWidth < 800) {
+      this.popoverPosition = "top"
+    } else {
+      this.popoverPosition = "left"
+    }
   }
 
   selectItem(item) {

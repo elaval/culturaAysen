@@ -29,6 +29,7 @@ export class CulturaComponent implements OnInit {
   }
 
 
+
   selectedItem(item) {
     this.selectedArea = item;
     this.selectedTerms = this.termsDict[item];

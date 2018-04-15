@@ -8,6 +8,9 @@ import * as d3 from "d3";
   styleUrls: ['./word-cloud.component.css']
 })
 export class WordCloudComponent implements OnInit {
+  wordsContainer: d3.Selection<d3.BaseType, Datum, PElement, PDatum>;
+  mainContainer: d3.Selection<d3.BaseType, {}, null, undefined>;
+  svg: d3.Selection<d3.BaseType, {}, null, undefined>;
   @Input()
   data: any[] = [{text: "blue", value:10}, {text: "red", value:20}, {text: "green", value:5}]
 
@@ -42,6 +45,13 @@ export class WordCloudComponent implements OnInit {
     .fontSize(function(d) { return d.size; })
     .on("end",(d) => this.draw(d));
 
+    this.svg = d3.select(this.elRef.nativeElement).select("svg");
+    this.mainContainer = this.svg;
+
+    this.wordsContainer = this.mainContainer.append("g")
+    .attr("class", "words container")
+    
+
     this.inited = true;
     this.updateContainerSize()
 
@@ -62,30 +72,39 @@ export class WordCloudComponent implements OnInit {
 
   draw(words) {
 
-    d3.select(this.elRef.nativeElement).select("svg")
+
+
+    this.svg
         .attr("width", this.layout.size()[0])
-        .attr("height", this.layout.size()[1])
-      .append("g")
-        .attr("transform", "translate(" + this.layout.size()[0] / 2 + "," + this.layout.size()[1] / 2 + ")")
-      .selectAll("text")
+        .attr("height", this.layout.size()[1]);
+
+    this.wordsContainer
+      .attr("transform", "translate(" + this.layout.size()[0] / 2 + "," + this.layout.size()[1] / 2 + ")")
+
+    let words = this.wordsContainer.selectAll("text.word")
         .data(words)
-      .enter().append("text")
-        .style("font-size", function(d:any) { return d.size + "px"; })
+
+    words = words.enter()
+        .append("text")
+        .attr("class", "word")
         .style("font-family", "Impact")
+        .attr("text-anchor", "middle")
+        .on("click", (d:any) => {
+          this.selectedItem.emit(d.text)
+        })
+        .merge(words);
+
+    words
+        .style("font-size", function(d:any) { return d.size + "px"; })
         .style("fill", (d, i) => { 
           const fillFunc = this.fill;
           const color = fillFunc(i+"");
           return  color
         })
-        .attr("text-anchor", "middle")
         .attr("transform", function(d:any) {
           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
         })
         .text(function(d:any) { return d.text; })
-        .on("click", (d:any) => {
-          this.selectedItem.emit(d.text)
-        })
-        
         ;
   }
 
@@ -99,13 +118,7 @@ export class WordCloudComponent implements OnInit {
       let width = parentNode.getBoundingClientRect().width;
 
       this.width =  width;
-      /*this.svg
-        .attr("width",this.width+this.margin.left+this.margin.right);
-
-      this.mainContainer
-      .attr("transform", `translate(${this.width/2}, ${this.height/2})`);
-      */
-
+      this.height =  window.innerHeight / 2;
 
       this.layout
       .size([this.width, this.height])
@@ -113,6 +126,11 @@ export class WordCloudComponent implements OnInit {
     }
 
 
+  }
+
+  onResize(e) {
+    this.updateContainerSize();
+    this.render();
   }
 
   ngOnChanges(changes: SimpleChanges) {
