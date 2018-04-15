@@ -12,7 +12,7 @@ before_script:
   - npm i
 
 script:
-  - ng build  --base-href /cultura_aysen
+  - ng build  --base-href /cultura_aysen/
 
 deploy:
   provider: s3
