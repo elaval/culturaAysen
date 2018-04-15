@@ -1,0 +1,17 @@
+<h2>{{data.subArea}}</h2>
+
+<ul class="list-group">
+  <li *ngFor="let item of data.items" 
+    class="list-group-item"
+    popover="{{item['Resumen de la nota']}} ({{item['Medio']}})"
+    popoverTitle="{{item['Titular']}}"
+    placement="left"
+    [class.active]="item==selectedItem"
+    triggers="focus:blur"
+    tabindex="1" 
+
+    >
+    ({{item["date"] | amDateFormat: 'MMM YYYY'}}) {{item["Titular"]}}</li>
+</ul>
+
+
