@@ -8,7 +8,7 @@ import * as d3 from "d3";
   styleUrls: ['./word-cloud.component.css']
 })
 export class WordCloudComponent implements OnInit {
-  wordsContainer: d3.Selection<d3.BaseType, Datum, PElement, PDatum>;
+  wordsContainer: d3.Selection<d3.BaseType, {}, null, undefined>;
   mainContainer: d3.Selection<d3.BaseType, {}, null, undefined>;
   svg: d3.Selection<d3.BaseType, {}, null, undefined>;
   @Input()
@@ -70,9 +70,7 @@ export class WordCloudComponent implements OnInit {
     }
   }
 
-  draw(words) {
-
-
+  draw(data) {
 
     this.svg
         .attr("width", this.layout.size()[0])
@@ -82,7 +80,7 @@ export class WordCloudComponent implements OnInit {
       .attr("transform", "translate(" + this.layout.size()[0] / 2 + "," + this.layout.size()[1] / 2 + ")")
 
     let words = this.wordsContainer.selectAll("text.word")
-        .data(words)
+        .data(data)
 
     words = words.enter()
         .append("text")
