@@ -12,7 +12,8 @@ before_script:
   - npm i
 
 script:
-  - ng build  --base-href /cultura_aysen/
+  - ng build --env=prod --base-href /cognito/
+
 
 deploy:
   provider: s3
