@@ -2,8 +2,8 @@
 
 <ul class="list-group">
   <li *ngFor="let item of data.items" 
-    class="list-group-item"
-    popover="{{item['Resumen de la nota']}} ({{item['Medio']}})"
+    class="list-group-item item"
+    popover="{{item['Resumen de la nota']}} (Fuente: {{item['Medio']}})"
     popoverTitle="{{item['Titular']}}"
     placement="left"
     [class.active]="item==selectedItem"
@@ -11,7 +11,7 @@
     tabindex="1" 
 
     >
-    ({{item["date"] | amDateFormat: 'MMM YYYY'}}) {{item["Titular"]}}</li>
+    {{item["date"] | amDateFormat: 'YYYY'}} - {{item["Titular"]}}</li>
 </ul>
 
 

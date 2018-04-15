@@ -30,7 +30,7 @@ export class AreaViewComponent implements OnInit {
       this.subAreas = _.keys(subAreaDict).map(d => {
         return {
           subArea : d,
-          items: subAreaDict[d]
+          items: _.sortBy(subAreaDict[d], d => d.date)
         }
       })
     }
